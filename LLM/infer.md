@@ -20,8 +20,24 @@ GPTQ与GGML异同：
 
 ### AWQ
 
-[原始论文](https://arxiv.org/abs/2306.00978)
+[原始论文](https://arxiv.org/abs/2306.00978) 
 [开源链接](https://github.com/mit-han-lab/llm-awq)
 
+AWQ是一种类似于 GPTQ 的量化方法。AWQ 和 GPTQ 之间有几个区别，但最重要的区别是 AWQ 假设并非所有权重对 LLM 的性能都同等重要。在量化过程中，不会对所有权重进行量化；相反，只会量化对于模型保持有效性不重要的权重。因此，他们的论文提到与 GPTQ 相比，它们在保持类似甚至更好性能的同时实现了显著的加速。
 
 ![image](https://github.com/user-attachments/assets/02d9af38-6414-47a2-a4da-29b20aad7ded)
+
+[autoawq实操内容](https://github.com/casper-hansen/AutoAWQ)
+
+![image](https://github.com/user-attachments/assets/7f0645cc-1653-48f8-bf7d-c9bbeb94951e)
+
+
+### 量化选择  
+
+1. 8bit 量化损失较小。 
+2. AWQ 4bit量化对8B模型来说有2%性能损失，对70B模型只有0.05%性能损失，模型越大损失越小。
+3. 参数越大的模型，低bit量化损失越低。AWQ 3bit 70B 也只有2.7%性能损失。 
+4. 如果追求几乎无损的性能损失，8B模型用8bit量化，70B模型用4bit量化；如果能接受2-3%损失，8B模型用4bit量化，70B模型用3bit量化。 
+5. 有现有量化模型，优先用AWQ，loss更低。
+无现在量化模型，优先使用GPTQ量化，量化成本比AWQ低，若追求准确性（loss低）可选择AWQ量化
+
